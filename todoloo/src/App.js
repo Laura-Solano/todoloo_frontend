@@ -1,22 +1,16 @@
-import globalTheme from "./theme/theme";
-import { ThemeProvider } from "@material-ui/core/styles";
-import HomeIndex from "./components/home/HomeIndex";
-import NavBar from "./components/Navbar";
-import Header from "./components/Header";
-
-function App() {
-  return (
-    <ThemeProvider theme={globalTheme}>
-      <div>
-        {/* <Router>
-          <Route exact path="/"> */}
-        <HomeIndex />
-        {/* </Route>
-        </Router> */}
-        <NavBar />
+import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LandingPage from "./components/home/LandingPage";
+export default class App extends Component {
+  render() {
+    return (
+      <div className="app">
+        <Router>
+          <switch>
+            <Route exact path={"/"} component={LandingPage} />
+          </switch>
+        </Router>
       </div>
-    </ThemeProvider>
-  );
+    );
+  }
 }
-
-export default App;

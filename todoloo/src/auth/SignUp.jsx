@@ -1,134 +1,79 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import { Field, Form, FormSpy } from "react-final-form";
-import Typography from "./modules/components/Typography";
-import AppFooter from "./modules/views/AppFooter";
-
-import AppForm from "./modules/views/AppForm";
-import { email, required } from "./modules/form/validation";
-import RFTextField from "./modules/form/RFTextField";
-import FormButton from "./modules/form/FormButton";
-import FormFeedback from "./modules/form/FormFeedback";
-import withRoot from "./modules/withRoot";
-
-function SignUp() {
-  const [sent, setSent] = React.useState(false);
-
-  const validate = (values) => {
-    const errors = required(
-      ["firstName", "lastName", "email", "password"],
-      values
-    );
-
-    if (!errors.email) {
-      const emailError = email(values.email);
-      if (emailError) {
-        errors.email = emailError;
-      }
-    }
-
-    return errors;
-  };
-
-  const handleSubmit = () => {
-    setSent(true);
-  };
-
-  return (
-    <React.Fragment>
-      <AppForm>
-        <React.Fragment>
-          <Typography variant="h3" gutterBottom marked="center" align="center">
-            Sign Up
-          </Typography>
-          <Typography variant="body2" align="center">
-            <Link href="/todoloo/sign-in/">Already have an account?</Link>
-          </Typography>
-        </React.Fragment>
-        <Form
-          onSubmit={handleSubmit}
-          subscription={{ submitting: true }}
-          validate={validate}
-        >
-          {({ handleSubmit: handleSubmit2, submitting }) => (
-            <Box
-              component="form"
-              onSubmit={handleSubmit2}
-              noValidate
-              sx={{ mt: 6 }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    autoFocus
-                    component={RFTextField}
-                    disabled={submitting || sent}
-                    autoComplete="given-name"
-                    fullWidth
-                    label="First name"
-                    name="firstName"
-                    required
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    component={RFTextField}
-                    disabled={submitting || sent}
-                    autoComplete="family-name"
-                    fullWidth
-                    label="Last name"
-                    name="lastName"
-                    required
-                  />
-                </Grid>
-              </Grid>
-              <Field
-                autoComplete="email"
-                component={RFTextField}
-                disabled={submitting || sent}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-              />
-              <Field
-                fullWidth
-                component={RFTextField}
-                disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="new-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback error sx={{ mt: 2 }}>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
-              <FormButton
-                sx={{ mt: 3, mb: 2 }}
-                disabled={submitting || sent}
+import React, { Component } from "react";
+import {
+  Dialog,
+  Button,
+  TextField,
+  Box,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+export default class SignUp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      userName: "",
+      password: "",
+      message: "",
+      registrationError: "",
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(e) {
+    CSSConditionRule.log("handlechange", e);
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+  }
+  render() {
+    return (
+      <Box>
+        <Box component="form" onSubmit={this.handleSubmit}>
+          <div>
+            <TextField
+              variant="standard"
+              placeholder="Email Address"
+              margin="normal"
+              required
+              onChange={this.handleChange}
+              value={this.state.email}
+            />
+          </div>
+          <div>
+            <TextField
+              variant="standard"
+              placeholder="Username"
+              margin="normal"
+              required
+              onChange={this.handleChange}
+              value={this.state.userName}
+            />
+          </div>
+          <div>
+            <TextField
+              variant="standard"
+              placeholder="Password"
+              margin="normal"
+              required
+              onChange={this.handleChange}
+              value={this.state.password}
+            />
+            <div>
+              <Button
+                variant="contained"
                 color="secondary"
-                fullWidth
+                sx={{ width: "40ch" }}
+                onClick={this.handleSubmit}
               >
-                {submitting || sent ? "In progress…" : "Sign Up"}
-              </FormButton>
-            </Box>
-          )}
-        </Form>
-      </AppForm>
-      <AppFooter />
-    </React.Fragment>
-  );
+                Join In
+              </Button>
+            </div>
+          </div>
+        </Box>
+      </Box>
+    );
+  }
 }
-
-export default withRoot(SignUp);

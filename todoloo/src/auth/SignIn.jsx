@@ -1,121 +1,119 @@
-import * as React from "react";
-import { Field, Form, FormSpy } from "react-final-form";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import Typography from "./modules/components/Typography";
-import AppFooter from "./modules/views/AppFooter";
-import AppAppBar from "./modules/views/AppAppBar";
-import AppForm from "./modules/views/AppForm";
-import { email, required } from "./modules/form/validation";
-import RFTextField from "./modules/form/RFTextField";
-import FormButton from "./modules/form/FormButton";
-import FormFeedback from "./modules/form/FormFeedback";
-import withRoot from "./modules/withRoot";
+import React, { Component } from "react";
+import {
+  Dialog,
+  Button,
+  TextField,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Box
+} from "@material-ui/core";
 
-function SignIn() {
-  const [sent, setSent] = React.useState(false);
+class SignIn extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      message: "",
+      open: false,
+    };
+  }
 
-  const validate = (values) => {
-    const errors = required(["email", "password"], values);
+  setEmail = (e) => {
+    this.setState({
+      email: e.target.value,
+    });
+  };
 
-    if (!errors.email) {
-      const emailError = email(values.email);
-      if (emailError) {
-        errors.email = emailError;
-      }
+  setPassword = (e) => {
+    this.setState({
+      password: e.target.value,
+    });
+  };
+
+  signIn = () => {
+    if (this.state.username === "react" && this.state.password === "password") {
+      this.setState({
+        open: true,
+        message: "You have successfully Logged In!",
+      });
+    } else {
+      this.setState({
+        open: true,
+        message: "Incorrect Username or Password!",
+      });
     }
-
-    return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
   };
 
-  return (
-    <React.Fragment>
-      <AppAppBar />
-      <AppForm>
-        <React.Fragment>
-          <Typography variant="h3" gutterBottom marked="center" align="center">
-            Sign In
-          </Typography>
-          <Typography variant="body2" align="center">
-            {"Not a member yet? "}
-            <Link href="/todoloo/sign-up/" align="center" underline="always">
-              Sign Up here
-            </Link>
-          </Typography>
-        </React.Fragment>
-        <Form
-          onSubmit={handleSubmit}
-          subscription={{ submitting: true }}
-          validate={validate}
-        >
-          {({ handleSubmit: handleSubmit2, submitting }) => (
-            <Box
-              component="form"
-              onSubmit={handleSubmit2}
-              noValidate
-              sx={{ mt: 6 }}
-            >
-              <Field
-                autoComplete="email"
-                autoFocus
-                component={RFTextField}
-                disabled={submitting || sent}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-                size="large"
-              />
-              <Field
-                fullWidth
-                size="large"
-                component={RFTextField}
-                disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="current-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback error sx={{ mt: 2 }}>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
-              <FormButton
-                sx={{ mt: 3, mb: 2 }}
-                disabled={submitting || sent}
-                size="large"
-                color="secondary"
-                fullWidth
+  render() {
+    return (
+      <Box
+      sx={BoxContainerSx}>
+      <Box
+          component="form"
+          sx={BoxFormSx}
+          noValidate
+          autocomplete="off"
+      >
+            <TextField
+              variant="standard"
+              placeholder="Username"
+              margin="normal"
+              required
+              onChange={this.setEmail}
+              value={this.state.email}
+            />
+            <TextField
+              variant="standard"
+              placeholder="Password"
+              margin="normal"
+              required
+              type="password"
+              onChange={this.setPassword}
+              value={this.state.password}
+            />
+
+            <div className="Button">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  this.signIn();
+                }}
               >
-                {submitting || sent ? "In progress…" : "Sign In"}
-              </FormButton>
-            </Box>
-          )}
-        </Form>
-        <Typography align="center">
-          <Link
-            underline="always"
-            href="/premium-themes/onepirate/forgot-password/"
+                Log In
+              </Button>
+            </div>
+          </div>
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
           >
-            Forgot password?
-          </Link>
-        </Typography>
-      </AppForm>
-      <AppFooter />
-    </React.Fragment>
-  );
+            <DialogTitle id="alert-dialog-title">Sign In</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {this.state.message}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Okay
+              </Button>
+            </DialogActions>
+          </Dialog>
+          </Box>
+        </Box>
+    
+  }
 }
-
-export default withRoot(SignIn);
+export default SignIn;
