@@ -1,6 +1,32 @@
 import { createTheme } from "@mui/material/styles";
 
 const Theme = createTheme({
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: "1rem",
+          borderRadius: 25,
+          paddingLeft: 20,
+          paddingRight: 20,
+          marginLeft: 5,
+          marginRight: 5,
+          textTransform: "capitalize",
+          boxShadow: "none",
+        },
+      },
+    },
+  },
   palette: {
     type: "light",
     primary: {
@@ -8,6 +34,9 @@ const Theme = createTheme({
     },
     secondary: {
       main: "#3bc3c3",
+    },
+    tertiary: {
+      main: "#FBEFEF",
     },
     warning: {
       main: "#ffd600",
@@ -23,6 +52,8 @@ const Theme = createTheme({
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 700,
+    paddingTop: 0,
+    paddingBottom: 20,
   },
 });
 
