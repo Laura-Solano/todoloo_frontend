@@ -36,11 +36,29 @@ export default class SignUp extends Component {
     this.setState({ userName: e.target.value });
     console.log("handlechange", e);
   }
-  handleSubmit(e) {
-    console.log("form submitted");
-    e.preventDefault();
-  }
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:3000/user/register", {
+      method: "POST",
+      body: JSON.stringify({
+        user: {
+          email: this.state.email,
+          username: this.state.userName,
+          password: this.state.password,
+        },
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.props.updateToken(data.sessionToken, data.user.role);
+      })
+      .then(() => this.props.activeOff())
+      .catch((err) => console.log(err));
+  };
   render() {
     return (
       <Container component="main" maxWidth="xs">
@@ -51,13 +69,13 @@ export default class SignUp extends Component {
             flexDirection: "column",
             alignItems: "center",
             boxShadow: 24,
-            bgcolor: "tertiary.main",
+            bgcolor: "White",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" color="secondary.main">
             Sign Up
           </Typography>
 
@@ -77,7 +95,7 @@ export default class SignUp extends Component {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  variant="standard"
+                  variant="filled"
                   placeholder="Email Address"
                   margin="normal"
                   required
@@ -110,7 +128,6 @@ export default class SignUp extends Component {
                 <Button
                   type="submit"
                   variant="contained"
-                  color="secondary"
                   sx={{ width: "40ch" }}
                   onClick={this.handleSubmit}
                 >
