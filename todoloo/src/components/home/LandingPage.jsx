@@ -4,6 +4,7 @@ import BannerImage from "../../assets/images/BannerImage.jpg";
 import { Box, Grid, Typography } from "@mui/material";
 import Logo from "../../assets/images/Logo.jpg";
 import SignUp from "../../auth/SignUp";
+import SignIn from "../../auth/SignIn";
 
 const LandingPage = (props) => {
   return (
@@ -33,8 +34,6 @@ const LandingPage = (props) => {
           />
         </Grid>
       </Grid>
-
-      <SignUp />
     </Box>
   );
 };

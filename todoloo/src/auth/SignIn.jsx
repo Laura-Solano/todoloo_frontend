@@ -1,119 +1,110 @@
 import React, { Component } from "react";
 import {
-  Dialog,
   Button,
   TextField,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Box
+  Box,
+  Container,
+  Typography,
+  Avatar,
+  Grid,
 } from "@material-ui/core";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Link } from "react-router-dom";
 
-class SignIn extends Component {
+export default class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
-      message: "",
-      open: false,
     };
+    this.emailPasswordChange = this.emailPasswordChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
-
-  setEmail = (e) => {
+  emailPasswordChange(e) {
     this.setState({
       email: e.target.value,
     });
-  };
+  }
 
-  setPassword = (e) => {
+  handlePasswordChange(e) {
     this.setState({
       password: e.target.value,
     });
-  };
-
-  signIn = () => {
-    if (this.state.username === "react" && this.state.password === "password") {
-      this.setState({
-        open: true,
-        message: "You have successfully Logged In!",
-      });
-    } else {
-      this.setState({
-        open: true,
-        message: "Incorrect Username or Password!",
-      });
-    }
-  };
-
-  handleClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
+  }
 
   render() {
     return (
-      <Box
-      sx={BoxContainerSx}>
-      <Box
-          component="form"
-          sx={BoxFormSx}
-          noValidate
-          autocomplete="off"
-      >
-            <TextField
-              variant="standard"
-              placeholder="Username"
-              margin="normal"
-              required
-              onChange={this.setEmail}
-              value={this.state.email}
-            />
-            <TextField
-              variant="standard"
-              placeholder="Password"
-              margin="normal"
-              required
-              type="password"
-              onChange={this.setPassword}
-              value={this.state.password}
-            />
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            boxShadow: 24,
+            bgcolor: "White",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "primary" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5" color="primary">
+            Sign In
+          </Typography>
 
-            <div className="Button">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  this.signIn();
-                }}
-              >
-                Log In
-              </Button>
-            </div>
-          </div>
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
+          <Box
+            component="form"
+            noValidate
+            onSubmit={this.handleSubmit}
+            sx={{
+              "& .MuiTextField-root": {
+                m: 2,
+                width: "40ch",
+                maxWidth: "100%",
+              },
+              textAlign: "center",
+            }}
           >
-            <DialogTitle id="alert-dialog-title">Sign In</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {this.state.message}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Okay
-              </Button>
-            </DialogActions>
-          </Dialog>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="filled"
+                  placeholder="Email Address"
+                  margin="normal"
+                  required
+                  onChange={this.emailPasswordChange}
+                  value={this.state.email}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="standard"
+                  placeholder="Password"
+                  margin="normal"
+                  required
+                  onChange={this.handlePasswordChange}
+                  value={this.state.password}
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ width: "40ch" }}
+                  onClick={this.handleSubmit}
+                >
+                  Sign In
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Link to="/auth/signup">Don't have an account? Sign up</Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
-    
+      </Container>
+    );
   }
 }
-export default SignIn;

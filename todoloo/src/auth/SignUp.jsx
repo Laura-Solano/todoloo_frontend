@@ -7,9 +7,9 @@ import {
   Typography,
   Avatar,
   Grid,
-  Link,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Link } from "react-router-dom";
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -54,9 +54,8 @@ export default class SignUp extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        this.props.updateToken(data.sessionToken, data.user.role);
+        console.log(data.sessionToken);
       })
-      .then(() => this.props.activeOff())
       .catch((err) => console.log(err));
   };
   render() {
@@ -135,9 +134,7 @@ export default class SignUp extends Component {
                 </Button>
               </Grid>
               <Grid item xs={12}>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+                <Link to="/signin">Already have an account? Sign in</Link>
               </Grid>
             </Grid>
           </Box>
