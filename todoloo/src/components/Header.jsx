@@ -2,7 +2,6 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import { Toolbar, Box, Link, Button } from "@material-ui/core";
 import Icon from "../assets/images/Icon1.JPG";
-import { Link as RouterLink } from "react-router-dom";
 function Header() {
   return (
     <React.Fragment>
@@ -16,7 +15,7 @@ function Header() {
       >
         <Toolbar color="primary">
           <Box />
-          <Link to="/">
+          <Link href="/">
             <Box
               component="img"
               sx={{

@@ -25,7 +25,9 @@ class HomeIndex extends Component {
   render() {
     return (
       <Container>
-        <Box>I'm placing something here</Box>
+        <Box>
+          <h1></h1>
+        </Box>
         <div>
           <Navbar />
           <Cards />

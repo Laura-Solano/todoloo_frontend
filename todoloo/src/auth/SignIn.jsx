@@ -18,34 +18,26 @@ export default class SignIn extends Component {
       email: "",
       password: "",
     };
-    this.emailPasswordChange = this.emailPasswordChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-  }
-  emailPasswordChange(e) {
-    this.setState({
-      email: e.target.value,
-    });
   }
 
-  handlePasswordChange(e) {
-    this.setState({
-      password: e.target.value,
-    });
-  }
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     fetch("http://localhost:3000/user/login", {
       method: "POST",
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
       body: JSON.stringify({
         user: {
           email: this.state.email,
           password: this.state.password,
         },
       }),
-    });
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.props.updateToken(data.sessionToken);
+      });
   };
 
   render() {
@@ -88,8 +80,7 @@ export default class SignIn extends Component {
                   placeholder="Email Address"
                   margin="normal"
                   required
-                  onChange={this.emailPasswordChange}
-                  value={this.state.email}
+                  onChange={(e) => this.setState({ email: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,8 +89,7 @@ export default class SignIn extends Component {
                   placeholder="Password"
                   margin="normal"
                   required
-                  onChange={this.handlePasswordChange}
-                  value={this.state.password}
+                  onChange={(e) => this.setState({ password: e.target.value })}
                   autoComplete="new-password"
                 />
               </Grid>
@@ -108,7 +98,6 @@ export default class SignIn extends Component {
                   type="submit"
                   variant="contained"
                   sx={{ width: "40ch" }}
-                  onClick={this.handleSubmit}
                 >
                   Sign In
                 </Button>

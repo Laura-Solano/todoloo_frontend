@@ -7,10 +7,10 @@ function Navbar() {
     <React.Fragment>
       <AppBar
         position="fixed"
-        sx={{ top: "auto", bottom: 0, color: "secondary" }}
+        sx={{ top: "auto", bottom: 0, backgroundColor: "#3bc3c3" }}
       >
         <Toolbar>
-          <Button color="secondary">Add a Review+</Button>
+          <Button color="inherit">Add a Review+</Button>
         </Toolbar>
       </AppBar>
     </React.Fragment>
