@@ -15,36 +15,20 @@ export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: "",
       email: "",
-      userName: "",
       password: "",
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-  }
-  handleEmailChange(e) {
-    this.setState({ email: e.target.value });
-    console.log("handlechange", e);
-  }
-  handlePasswordChange(e) {
-    this.setState({ password: e.target.value });
-    console.log("handlechange", e);
-  }
-  handleUsernameChange(e) {
-    this.setState({ userName: e.target.value });
-    console.log("handlechange", e);
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     fetch("http://localhost:3000/user/register", {
       method: "POST",
       body: JSON.stringify({
         user: {
+          username: this.state.username,
           email: this.state.email,
-          username: this.state.userName,
           password: this.state.password,
         },
       }),
@@ -54,10 +38,10 @@ export default class SignUp extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.sessionToken);
-      })
-      .catch((err) => console.log(err));
+        this.props.updateToken(data.sessionToken);
+      });
   };
+
   render() {
     return (
       <Container component="main" maxWidth="xs">
@@ -74,7 +58,7 @@ export default class SignUp extends Component {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5" color="secondary.main">
+          <Typography component="h1" variant="h5" color="primary">
             Sign Up
           </Typography>
 
@@ -98,8 +82,7 @@ export default class SignUp extends Component {
                   placeholder="Email Address"
                   margin="normal"
                   required
-                  onChange={this.handleEmailChange}
-                  value={this.state.email}
+                  onChange={(e) => this.setState({ email: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -108,8 +91,7 @@ export default class SignUp extends Component {
                   placeholder="Username"
                   margin="normal"
                   required
-                  onChange={this.handleUsernameChange}
-                  value={this.state.userName}
+                  onChange={(e) => this.setState({ username: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -118,8 +100,7 @@ export default class SignUp extends Component {
                   placeholder="Password"
                   margin="normal"
                   required
-                  onChange={this.handlePasswordChange}
-                  value={this.state.password}
+                  onChange={(e) => this.setState({ password: e.target.value })}
                   autoComplete="new-password"
                 />
               </Grid>
@@ -128,13 +109,12 @@ export default class SignUp extends Component {
                   type="submit"
                   variant="contained"
                   sx={{ width: "40ch" }}
-                  onClick={this.handleSubmit}
                 >
                   Sign Up
                 </Button>
               </Grid>
               <Grid item xs={12}>
-                <Link to="/signin">Already have an account? Sign in</Link>
+                <Link to="/auth/signin">Already have an account? Sign in</Link>
               </Grid>
             </Grid>
           </Box>

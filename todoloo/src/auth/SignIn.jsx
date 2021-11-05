@@ -32,6 +32,21 @@ export default class SignIn extends Component {
       password: e.target.value,
     });
   }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        user: {
+          email: this.state.email,
+          password: this.state.password,
+        },
+      }),
+    });
+  };
 
   render() {
     return (

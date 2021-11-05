@@ -1,10 +1,8 @@
 import React from "react";
-import Container from "@mui/material/Container";
+
 import BannerImage from "../../assets/images/BannerImage.jpg";
 import { Box, Grid, Typography } from "@mui/material";
 import Logo from "../../assets/images/Logo.jpg";
-import SignUp from "../../auth/SignUp";
-import SignIn from "../../auth/SignIn";
 
 const LandingPage = (props) => {
   return (
@@ -19,7 +17,7 @@ const LandingPage = (props) => {
     >
       <Grid container justifyContent="center" alignItems="center" spacing={2}>
         <Grid item xs={8}>
-          <Typography variant="h4" color="primary.main">
+          <Typography color="primary" variant="h2">
             Providing Some Relief For the Anxious Goer
           </Typography>
         </Grid>
