@@ -4,14 +4,11 @@ import {
   TextField,
   Button,
   Checkbox,
-  InputAdornment,
   Box,
   FormControlLabel,
   MenuItem,
   IconButton,
-  Snackbar,
 } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
 import ImageUpload from "./ImageUpload";
 
 export default class ReviewCreate extends Component {
@@ -20,9 +17,9 @@ export default class ReviewCreate extends Component {
     this.state = {
       locationName: "",
       review: "",
-      isFree: "",
+      isFree: false,
       numStall: "",
-      isHelpful: "",
+      isHelpful: false,
       stallType: "",
       photoUrl: "",
     };
@@ -44,7 +41,7 @@ export default class ReviewCreate extends Component {
       }),
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: this.props.token,
+        Authorization: this.props.sessionToken,
       }),
     })
       .then((response) => response.json())
@@ -54,18 +51,18 @@ export default class ReviewCreate extends Component {
       });
   };
 
-  //   const stallType = [
-  //     { value: "Men", label: "Men" },
-  //     { value: "Women", label: "Women" },
-  //     { value: "Family", label: "Family" },
-  //     { value: "Unisex", label: "Unisex" },
-  //   ];
+  stallType = [
+    { value: "Men", label: "Men" },
+    { value: "Women", label: "Women" },
+    { value: "Family", label: "Family" },
+    { value: "Unisex", label: "Unisex" },
+  ];
 
   render() {
     return (
       <Modal
-        // open={props.open}
-        // onClose={handleClose}
+        open={this.props.open}
+        onClose={!this.props.open}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
@@ -88,78 +85,88 @@ export default class ReviewCreate extends Component {
           <Box
             component="form"
             onSubmit={this.handleSubmit}
-            sx={{ display: "flex", flexWrap: "wrap" }}
-          ></Box>
-          <IconButton
-            aria-label="close"
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-            }}
+            sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
           >
-            <CloseIcon />
-          </IconButton>
-          <h2>Post a Review</h2>
-          <TextField
-            sx={{ m: 1, width: "25ch" }}
-            onChange={(e) => this.setState({ locationName: e.target.value })}
-            variant="filled"
-            label="Location Name"
-            required
-          ></TextField>
-          {/* <TextField
-          sx={{ m: 1, width: "25ch" }}
-          select
-          label="Select"
-          value={category}
-          onChange={handleChange}
-          helperText="Please select your category"
-          variant="outlined"
-          color="info"
-        >
-          {foodCategories.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))} */}
-          {/* </TextField> */}
-          <TextField
-            fullWidth
-            sx={{ m: 1 }}
-            onChange={(e) => this.setState({ review: e.target.value })}
-            variant="filled"
-            label="Describe the bathroom condition here:"
-            multiline
-            rows={15}
-            required
-          ></TextField>
-          <TextField
-            sx={{ m: 1, width: "25ch" }}
-            onChange={(e) => this.setState({ numStall: e.target.value })}
-            label="Number of Stalls"
-            variant="filled"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={(e) => this.setState({ isFree: e.target.checked })}
-              />
-            }
-          />
-
-          <div>
-            <Button
-              sx={{ mt: 4 }}
-              fullWidth
-              id="modal-description"
-              color="secondary"
-              variant="contained"
-              type="submit"
+            <IconButton
+              aria-label="close"
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+              }}
+            ></IconButton>
+            <h2>Post a Review</h2>
+            <TextField
+              sx={{ m: 1, width: "25ch" }}
+              onChange={(e) => this.setState({ locationName: e.target.value })}
+              variant="filled"
+              label="Location Name"
+              required
+            ></TextField>
+            <TextField
+              helperText="Stall Type:"
+              sx={{ m: 1, width: "25ch" }}
+              select
+              label="Select"
+              onChange={this.handleChange}
+              variant="outlined"
             >
-              Post My Recipe
-            </Button>
-          </div>
+              {this.stallType.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              fullWidth
+              sx={{ m: 1, width: "25ch" }}
+              onChange={(e) => this.setState({ review: e.target.value })}
+              variant="filled"
+              label="Describe the bathroom condition here:"
+              multiline
+              rows={10}
+              required
+            ></TextField>
+            <TextField
+              sx={{ m: 1, width: "25ch" }}
+              onChange={(e) => this.setState({ numStall: e.target.value })}
+              label="Number of Stalls"
+              variant="filled"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  sx={{ m: 1, width: "25ch" }}
+                  color="primary"
+                  onChange={(e) => this.setState({ isFree: e.target.checked })}
+                />
+              }
+              label="Free to use?"
+            />
+            <ImageUpload />
+            <div>
+              <Button
+                sx={{ mt: 4 }}
+                fullWidth
+                id="modal-description"
+                color="secondary"
+                variant="contained"
+                type="submit"
+              >
+                Post
+              </Button>
+              <Button
+                sx={{ mt: 4 }}
+                fullWidth
+                id="modal-description"
+                color="secondary"
+                variant="contained"
+                onClick={() => this.props.handleClose()}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Box>
         </Box>
       </Modal>
     );

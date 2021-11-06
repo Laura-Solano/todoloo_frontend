@@ -17,11 +17,17 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    if (localStorage.getItem("sessionToken")) {
+      this.setState({ sessionToken: localStorage.getItem("sessionToken") });
+    }
+  }
+
   updateToken = (newToken) => {
     if (newToken === undefined) {
       return;
     } else {
-      localStorage.setItem("sessionToken", this.state.newToken);
+      localStorage.setItem("sessionToken", newToken);
       this.setState({ sessionToken: newToken });
     }
 
@@ -39,7 +45,9 @@ class App extends Component {
             <Route exact path={"/"} component={LandingPage} />
 
             {this.state.sessionToken ? (
-              <HomeIndex />
+              <Route exact path="/home">
+                <HomeIndex sessionToken={this.state.sessionToken} />
+              </Route>
             ) : (
               <Auth updateToken={this.updateToken} />
             )}
