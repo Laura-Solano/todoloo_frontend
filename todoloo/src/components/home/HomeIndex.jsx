@@ -3,12 +3,16 @@ import Navbar from "../Navbar";
 import Cards from "../home/Cards";
 import { Container, Box, Button, Typography } from "@mui/material";
 import ReviewCreate from "../reviews/ReviewCreate";
+import CardContainer from "./CardContainer";
+import CardArea from "./CardArea";
 
 class HomeIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      reviews: "",
+      message: "",
     };
 
     this.handleClose = this.handleClose.bind(this);
@@ -42,10 +46,8 @@ class HomeIndex extends Component {
           </Button>
         </Container>
 
-        <div>
-          {/* <Navbar /> */}
-          <Cards />
-        </div>
+        {/* <Navbar /> */}
+
         {this.state.open && (
           <ReviewCreate
             open={this.state.open}
@@ -53,6 +55,13 @@ class HomeIndex extends Component {
             sessionToken={this.props.sessionToken}
           />
         )}
+        <div>
+          <CardArea>
+            <CardContainer>
+              {/* <Cards token={this.props.token} /> */}
+            </CardContainer>
+          </CardArea>
+        </div>
       </Container>
     );
   }

@@ -22,6 +22,7 @@ export default class ReviewCreate extends Component {
       isHelpful: false,
       stallType: "",
       photoUrl: "",
+      reviewCreate: {},
     };
   }
   handleSubmit = async (e) => {
@@ -46,7 +47,9 @@ export default class ReviewCreate extends Component {
     })
       .then((response) => response.json())
       .then((result) => {
-        this.setState({ reviewCreated: result });
+        console.log(result);
+        console.log(this.state.reviewCreate);
+        this.setState({ reviewCreate: result });
         console.log(result);
       });
   };
@@ -132,6 +135,7 @@ export default class ReviewCreate extends Component {
               onChange={(e) => this.setState({ numStall: e.target.value })}
               label="Number of Stalls"
               variant="filled"
+              required
             />
             <FormControlLabel
               control={
@@ -144,6 +148,7 @@ export default class ReviewCreate extends Component {
               label="Free to use?"
             />
             <ImageUpload />
+
             <div>
               <Button
                 sx={{ mt: 4 }}

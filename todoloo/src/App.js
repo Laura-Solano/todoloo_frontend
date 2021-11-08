@@ -13,7 +13,6 @@ class App extends Component {
     super(props);
     this.state = {
       sessionToken: "",
-      clearToken: "",
     };
   }
 
@@ -30,17 +29,13 @@ class App extends Component {
       localStorage.setItem("sessionToken", newToken);
       this.setState({ sessionToken: newToken });
     }
-
-    // clearToken = () => {
-    //   localStorage.clear();
-    //   this.setState({ sessionToken: "" });
-    // };
   };
+
   render() {
     return (
       <ThemeProvider theme={Theme}>
         <Container className="app" maxWidth="xl">
-          <Header />
+          <Header clearToken={this.state.clearToken} />
           <Switch>
             <Route exact path={"/"} component={LandingPage} />
 

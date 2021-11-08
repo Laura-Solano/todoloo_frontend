@@ -2,7 +2,11 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import { Toolbar, Box, Link, Button } from "@material-ui/core";
 import Icon from "../assets/images/Icon1.JPG";
+
 function Header() {
+  const clearToken = () => {
+    localStorage.clear();
+  };
   return (
     <React.Fragment>
       <AppBar
@@ -29,24 +33,28 @@ function Header() {
           </Link>
           <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
             <Button variant="contained" href="/auth/signup">
-              Join In
+              Join
             </Button>
             <Button variant="outlined" href="/auth/signin">
               Sign In
             </Button>
-            <Button
-              href="/"
-              onClick={() => this.props.clearToken()}
-              className="headerButton"
-              style={{
-                visibility: localStorage.getItem("token")
-                  ? "visible"
-                  : "hidden",
-                color: "#3E239E",
-              }}
+            <Box
+            // sx={{
+            //   visibility: localStorage.getItem("token")
+            //     ? "visible"
+            //     : "hidden",
+            // }}
             >
-              Logout
-            </Button>
+              <Button
+                href="/"
+                onClick={() => {
+                  clearToken();
+                }}
+                className="headerButton"
+              >
+                Logout
+              </Button>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
