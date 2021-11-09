@@ -39,6 +39,7 @@ export default class SignUp extends Component {
       .then((response) => response.json())
       .then((data) => {
         this.props.updateToken(data.sessionToken);
+        window.location.href = "/home";
       });
   };
 

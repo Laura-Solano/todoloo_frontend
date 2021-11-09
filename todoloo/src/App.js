@@ -7,7 +7,7 @@ import { Container } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Theme from "./theme/Theme";
 import HomeIndex from "./components/home/HomeIndex";
-import Header from "./components/Header";
+import Header from "./components/main/Header";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +39,7 @@ class App extends Component {
           <Switch>
             <Route exact path={"/"} component={LandingPage} />
 
-            {this.state.sessionToken ? (
+            {localStorage.getItem("sessionToken") ? (
               <Route exact path="/home">
                 <HomeIndex sessionToken={this.state.sessionToken} />
               </Route>

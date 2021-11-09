@@ -10,6 +10,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import ImageUpload from "./ImageUpload";
+import { Container } from "@mui/material";
 
 export default class ReviewCreate extends Component {
   constructor(props) {
@@ -23,7 +24,11 @@ export default class ReviewCreate extends Component {
       stallType: "",
       photoUrl: "",
       reviewCreate: {},
+      open: false,
     };
+  }
+  handleClose() {
+    this.setState({ open: !this.state.open });
   }
   handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,10 +52,10 @@ export default class ReviewCreate extends Component {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
-        console.log(this.state.reviewCreate);
+        this.props.reviewArray();
         this.setState({ reviewCreate: result });
         console.log(result);
+        this.handleClose();
       });
   };
 
@@ -63,117 +68,132 @@ export default class ReviewCreate extends Component {
 
   render() {
     return (
-      <Modal
-        open={this.props.open}
-        onClose={!this.props.open}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "800",
-            height: "800",
-            maxWidth: "100%",
-            maxHeight: "100%",
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-          }}
+      <Container>
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          onClick={() => this.handleClose()}
+        >
+          Add a Review
+        </Button>
+
+        <Modal
+          open={this.state.open}
+          onClose={!this.state.open}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
         >
           <Box
-            component="form"
-            onSubmit={this.handleSubmit}
-            sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "800",
+              height: "800",
+              maxWidth: "100%",
+              maxHeight: "100%",
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+            }}
           >
-            <IconButton
-              aria-label="close"
-              sx={{
-                position: "absolute",
-                right: 8,
-                top: 8,
-              }}
-            ></IconButton>
-            <h2>Post a Review</h2>
-            <TextField
-              sx={{ m: 1, width: "25ch" }}
-              onChange={(e) => this.setState({ locationName: e.target.value })}
-              variant="filled"
-              label="Location Name"
-              required
-            ></TextField>
-            <TextField
-              helperText="Stall Type:"
-              sx={{ m: 1, width: "25ch" }}
-              select
-              label="Select"
-              onChange={this.handleChange}
-              variant="outlined"
+            <Box
+              component="form"
+              onSubmit={this.handleSubmit}
+              sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
             >
-              {this.stallType.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              fullWidth
-              sx={{ m: 1, width: "25ch" }}
-              onChange={(e) => this.setState({ review: e.target.value })}
-              variant="filled"
-              label="Describe the bathroom condition here:"
-              multiline
-              rows={10}
-              required
-            ></TextField>
-            <TextField
-              sx={{ m: 1, width: "25ch" }}
-              onChange={(e) => this.setState({ numStall: e.target.value })}
-              label="Number of Stalls"
-              variant="filled"
-              required
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  sx={{ m: 1, width: "25ch" }}
-                  color="primary"
-                  onChange={(e) => this.setState({ isFree: e.target.checked })}
-                />
-              }
-              label="Free to use?"
-            />
-            <ImageUpload />
+              <IconButton
+                aria-label="close"
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              ></IconButton>
+              <h2>Post a Review</h2>
+              <TextField
+                sx={{ m: 1, width: "25ch" }}
+                onChange={(e) =>
+                  this.setState({ locationName: e.target.value })
+                }
+                variant="filled"
+                label="Location Name"
+                required
+              ></TextField>
+              <TextField
+                helperText="Stall Type:"
+                sx={{ m: 1, width: "25ch" }}
+                select
+                label="Select"
+                onChange={this.handleChange}
+                variant="outlined"
+              >
+                {this.stallType.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                fullWidth
+                sx={{ m: 1, width: "25ch" }}
+                onChange={(e) => this.setState({ review: e.target.value })}
+                variant="filled"
+                label="Describe the bathroom condition here:"
+                multiline
+                rows={10}
+                required
+              ></TextField>
+              <TextField
+                sx={{ m: 1, width: "25ch" }}
+                onChange={(e) => this.setState({ numStall: e.target.value })}
+                label="Number of Stalls"
+                variant="filled"
+                required
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{ m: 1, width: "25ch" }}
+                    color="primary"
+                    onChange={(e) =>
+                      this.setState({ isFree: e.target.checked })
+                    }
+                  />
+                }
+                label="Free to use?"
+              />
+              <ImageUpload />
 
-            <div>
-              <Button
-                sx={{ mt: 4 }}
-                fullWidth
-                id="modal-description"
-                color="secondary"
-                variant="contained"
-                type="submit"
-              >
-                Post
-              </Button>
-              <Button
-                sx={{ mt: 4 }}
-                fullWidth
-                id="modal-description"
-                color="secondary"
-                variant="contained"
-                onClick={() => this.props.handleClose()}
-              >
-                Cancel
-              </Button>
-            </div>
+              <div>
+                <Button
+                  sx={{ mt: 4 }}
+                  fullWidth
+                  id="modal-description"
+                  color="secondary"
+                  variant="contained"
+                  type="submit"
+                >
+                  Post
+                </Button>
+                <Button
+                  sx={{ mt: 4 }}
+                  fullWidth
+                  id="modal-description"
+                  color="secondary"
+                  variant="contained"
+                  onClick={() => this.handleClose()}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      </Container>
     );
   }
 }

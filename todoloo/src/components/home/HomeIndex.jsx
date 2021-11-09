@@ -1,29 +1,49 @@
 import React, { Component } from "react";
-import Navbar from "../Navbar";
-import Cards from "../home/Cards";
 import { Container, Box, Button, Typography } from "@mui/material";
 import ReviewCreate from "../reviews/ReviewCreate";
-import CardContainer from "./CardContainer";
-import CardArea from "./CardArea";
-
+import AllCards from "./AllCards";
+import ReviewCard from "../reviews/ReviewCard";
 class HomeIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      reviews: "",
-      message: "",
+      reviews: [],
     };
+  }
+  componentWillMount() {
+    this.fetchReviews();
+  }
+  fetchReviews = () => {
+    fetch("http://localhost:3000/reviews", {
+      method: "GET",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: this.props.token,
+      }),
+    })
+      .then((res) => res.json())
+      .then((jsonData) => {
+        return this.setState({ reviews: jsonData });
+      });
+  };
 
-    this.handleClose = this.handleClose.bind(this);
-    this.handleOpen = this.handleOpen.bind(this);
-  }
-  handleClose() {
-    this.setState({ open: !this.state.open });
-  }
   handleOpen() {
     this.setState({ handleOpen: !this.state.handleOpen });
   }
+
+  reviewDelete = (event) => {
+    console.log(event.target.id);
+    fetch(`http://localhost:3000/reviews/Delete/${event.target.id}`, {
+      method: "DELETE",
+      //body: JSON.stringify({ reviews: { id: event.target.id } }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: this.props.sessionToken,
+      }),
+    })
+      .then((res) => this.fetchReviews())
+      .catch((error) => console.log(error));
+  };
 
   render() {
     return (
@@ -36,34 +56,21 @@ class HomeIndex extends Component {
             Thank you for joining our community, the more feedback we can get
             the better.
           </Typography>
-          <Button
-            type="submit"
-            color="secondary"
-            variant="contained"
-            onClick={() => this.setState({ open: true })}
-          >
-            Add a Review
-          </Button>
         </Container>
 
         {/* <Navbar /> */}
 
-        {this.state.open && (
-          <ReviewCreate
-            open={this.state.open}
-            handleClose={this.handleClose}
-            sessionToken={this.props.sessionToken}
-          />
-        )}
+        <ReviewCreate
+          sessionToken={this.props.sessionToken}
+          reviewArray={this.fetchReviews}
+        />
         <div>
-          <CardArea>
-            <CardContainer>
-              {/* <Cards token={this.props.token} /> */}
-            </CardContainer>
-          </CardArea>
+          {/* <AllCards /> */}
+          <ReviewCard reviews={this.state.reviews} delete={this.reviewDelete} />
         </div>
       </Container>
     );
   }
 }
+
 export default HomeIndex;
