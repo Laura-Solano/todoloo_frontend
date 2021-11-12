@@ -9,8 +9,8 @@ import {
   MenuItem,
   IconButton,
 } from "@material-ui/core";
-import ImageUpload from "./ImageUpload";
 import { Container } from "@mui/material";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
 export default class ReviewEdit extends Component {
   constructor(props) {
@@ -23,41 +23,50 @@ export default class ReviewEdit extends Component {
       isHelpful: false,
       stallType: "",
       photoUrl: "",
-      reviewCreate: {},
       open: false,
     };
   }
   handleClose() {
     this.setState({ open: !this.state.open });
   }
+  uploadImage = async (e) => {
+    let files = e.target.files;
+    let data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "images");
+    let res = await fetch(
+      "https://api.cloudinary.com/v1_1/todoloo/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    let File = await res.json();
+    console.log(File);
+    this.setState({ photoUrl: File.secure_url });
+  };
+  componentWillMount() {
+    this.setState({
+      locationName: this.props.locationName,
+      review: this.props.review,
+      isFree: this.props.isFree,
+      numStall: this.props.numStall,
+      isHelpful: this.props.isHelpful,
+      stallType: this.props.stallType,
+      photoUrl: this.props.photoUrl,
+    });
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
   handleSubmit = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/reviews/Edit", {
-      method: "PUT",
-      body: JSON.stringify({
-        reviews: {
-          locationName: this.state.locationName,
-          review: this.state.review,
-          isFree: this.state.isFree,
-          numStall: this.state.numStall,
-          isHelpful: this.state.isHelpful,
-          stallType: this.state.stallType,
-          photoUrl: this.state.photoUrl,
-        },
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: this.props.sessionToken,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        console.log(this.state.reviewCreate);
-        this.setState({ reviewCreate: result });
-        console.log(result);
-        this.handleClose();
-      });
+    this.props.update(e, this.state);
+    this.handleClose();
   };
 
   stallType = [
@@ -70,15 +79,6 @@ export default class ReviewEdit extends Component {
   render() {
     return (
       <Container>
-        <Button
-          type="submit"
-          color="secondary"
-          variant="contained"
-          onClick={() => this.handleClose()}
-        >
-          Add a Review
-        </Button>
-
         <Modal
           open={this.state.open}
           onClose={!this.state.open}
@@ -117,12 +117,11 @@ export default class ReviewEdit extends Component {
               <h2>Post a Review</h2>
               <TextField
                 sx={{ m: 1, width: "25ch" }}
-                onChange={(e) =>
-                  this.setState({ locationName: e.target.value })
-                }
+                onChange={this.handleChange}
                 variant="filled"
                 label="Location Name"
                 required
+                value={this.state.locationName}
               ></TextField>
               <TextField
                 helperText="Stall Type:"
@@ -131,6 +130,7 @@ export default class ReviewEdit extends Component {
                 label="Select"
                 onChange={this.handleChange}
                 variant="outlined"
+                value={this.state.stallType}
               >
                 {this.stallType.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -141,33 +141,54 @@ export default class ReviewEdit extends Component {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "25ch" }}
-                onChange={(e) => this.setState({ review: e.target.value })}
+                onChange={this.handleChange}
                 variant="filled"
                 label="Describe the bathroom condition here:"
                 multiline
                 rows={10}
                 required
+                value={this.state.review}
               ></TextField>
               <TextField
                 sx={{ m: 1, width: "25ch" }}
-                onChange={(e) => this.setState({ numStall: e.target.value })}
+                onChange={this.handleChange}
                 label="Number of Stalls"
                 variant="filled"
                 required
+                value={this.state.numStall}
               />
               <FormControlLabel
                 control={
                   <Checkbox
                     sx={{ m: 1, width: "25ch" }}
                     color="primary"
-                    onChange={(e) =>
-                      this.setState({ isFree: e.target.checked })
-                    }
+                    onChange={this.handleChange}
+                    value={this.state.isFree}
                   />
                 }
                 label="Free to use?"
               />
-              <ImageUpload />
+              <TextField
+                accept="image/*"
+                autoFocus
+                margin="dense"
+                onChange={this.handleChange}
+                id="upload button"
+                name="photo_url"
+                label="Upload"
+                type="file"
+                fullWidth
+                variant="outlined"
+                value={this.state.photoUrl}
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </TextField>
 
               <div>
                 <Button

@@ -9,7 +9,7 @@ import {
   MenuItem,
   IconButton,
 } from "@material-ui/core";
-import ImageUpload from "./ImageUpload";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Container } from "@mui/material";
 
 export default class ReviewCreate extends Component {
@@ -30,6 +30,23 @@ export default class ReviewCreate extends Component {
   handleClose() {
     this.setState({ open: !this.state.open });
   }
+  uploadImage = async (e) => {
+    let files = e.target.files;
+    let data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "images");
+    let res = await fetch(
+      "https://api.cloudinary.com/v1_1/todoloo/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    let File = await res.json();
+    console.log(File);
+    this.setState({ photoUrl: File.secure_url });
+  };
+
   handleSubmit = async (e) => {
     e.preventDefault();
     fetch("http://localhost:3000/reviews/create", {
@@ -166,7 +183,26 @@ export default class ReviewCreate extends Component {
                 }
                 label="Free to use?"
               />
-              <ImageUpload />
+              <TextField
+                accept="image/*"
+                autoFocus
+                margin="dense"
+                onChange={this.uploadImage}
+                id="upload button"
+                name="photo_url"
+                label="Upload"
+                type="file"
+                fullWidth
+                variant="outlined"
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </TextField>
 
               <div>
                 <Button

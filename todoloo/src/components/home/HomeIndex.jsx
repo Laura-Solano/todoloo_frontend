@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Container, Box, Button, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import ReviewCreate from "../reviews/ReviewCreate";
-import AllCards from "./AllCards";
+import ReviewEdit from "../reviews/ReviewEdit";
 import ReviewCard from "../reviews/ReviewCard";
+import ReplyIndex from "../reply/ReplyIndex";
+import ReplyCreate from "../reply/ReplyCreate";
 class HomeIndex extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +12,7 @@ class HomeIndex extends Component {
       reviews: [],
     };
   }
+  ////GET all reviews
   componentWillMount() {
     this.fetchReviews();
   }
@@ -26,16 +29,17 @@ class HomeIndex extends Component {
         return this.setState({ reviews: jsonData });
       });
   };
+  //Create Review
 
   handleOpen() {
     this.setState({ handleOpen: !this.state.handleOpen });
   }
 
-  reviewDelete = (event) => {
-    console.log(event.target.id);
-    fetch(`http://localhost:3000/reviews/Delete/${event.target.id}`, {
+  //Delete All Reviews
+  reviewDelete = (e) => {
+    console.log(e.target.id);
+    fetch(`http://localhost:3000/reviews/Delete/${e.target.id}`, {
       method: "DELETE",
-      //body: JSON.stringify({ reviews: { id: event.target.id } }),
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: this.props.sessionToken,
@@ -43,6 +47,27 @@ class HomeIndex extends Component {
     })
       .then((res) => this.fetchReviews())
       .catch((error) => console.log(error));
+  };
+  //Edit Review
+  reviewUpdate = (e, review) => {
+    e.preventDefault();
+    fetch(`http://localhost:3000/reviews/Edit/${review.id}`, {
+      method: "PUT",
+      body: JSON.stringify({ reviews: review }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: this.props.sessionToken,
+      }),
+    }).then((res) => {
+      this.setState({ updatePress: false });
+      this.fetchReviews();
+    });
+  };
+  setUpdatedReview = (e, review) => {
+    this.setState({
+      reviewToUpdate: review,
+      updatePressed: true,
+    });
   };
 
   render() {
@@ -54,20 +79,35 @@ class HomeIndex extends Component {
           </Typography>
           <Typography variant="h3">
             Thank you for joining our community, the more feedback we can get
-            the better.
+            the better relief we all will have.
           </Typography>
         </Container>
-
         {/* <Navbar /> */}
-
         <ReviewCreate
           sessionToken={this.props.sessionToken}
           reviewArray={this.fetchReviews}
+          updateReviewArray={this.fetchReviews}
+        />
+
+        <ReplyCreate
+          sessionToken={this.props.sessionToken}
+          replyArray={this.fetchReplies}
         />
         <div>
-          {/* <AllCards /> */}
-          <ReviewCard reviews={this.state.reviews} delete={this.reviewDelete} />
+          <ReviewCard
+            reviews={this.state.reviews}
+            delete={this.reviewDelete}
+            update={this.reviewUpdate}
+          />
         </div>
+
+        <ReviewEdit
+          t={this.state.updatePressed}
+          update={this.reviewUpdate}
+          review={this.state.reviewToUpdate}
+        />
+        <div></div>
+        <ReplyIndex />
       </Container>
     );
   }

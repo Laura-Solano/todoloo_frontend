@@ -34,13 +34,15 @@ const ReviewCard = (props) => {
                   <Button id={review.id} onClick={(e) => props.delete(e)}>
                     Delete
                   </Button>
-                  |
+                  <br />
                   <Button
                     id={review.id}
                     onClick={(e) => props.update(e, review)}
                   >
                     Update
                   </Button>
+                  <br />
+                  <Button>Reply</Button>
                 </td>
               </tr>
             );
