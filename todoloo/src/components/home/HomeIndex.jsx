@@ -3,6 +3,7 @@ import { Container, Typography } from "@mui/material";
 import ReviewCreate from "../reviews/ReviewCreate";
 import ReviewEdit from "../reviews/ReviewEdit";
 import ReviewCard from "../reviews/ReviewCard";
+import APIURL from "../../helpers/environment";
 class HomeIndex extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +20,7 @@ class HomeIndex extends Component {
     this.fetchReviews();
   }
   fetchReviews = () => {
-    fetch("http://localhost:3000/reviews", {
+    fetch(`${APIURL}/reviews`, {
       method: "GET",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -45,7 +46,7 @@ class HomeIndex extends Component {
   //Delete A Reviews
   reviewDelete = (e) => {
     console.log(e.target.id);
-    fetch(`http://localhost:3000/reviews/Delete/${e.target.id}`, {
+    fetch(`${APIURL}/reviews/Delete/${e.target.id}`, {
       method: "DELETE",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -58,7 +59,7 @@ class HomeIndex extends Component {
   // Delete Reply;
   replyDelete = (e) => {
     console.log(e.target.id);
-    fetch(`http://localhost:3000/reply/deleteReply/${e.target.id}`, {
+    fetch(`${APIURL}/reply/deleteReply/${e.target.id}`, {
       method: "DELETE",
       body: JSON.stringify({ review: { id: e.target.id } }),
       headers: new Headers({

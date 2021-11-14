@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { Container } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import APIURL from "../../helpers/environment";
 
 export default class ReviewEdit extends Component {
   constructor(props) {
@@ -49,27 +50,24 @@ export default class ReviewEdit extends Component {
 
   handleUpdateReview = async (e) => {
     e.preventDefault();
-    fetch(
-      `http://localhost:3000/reviews/Edit/${this.props.reviewToUpdate.id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          reviews: {
-            locationName: this.state.locationName,
-            review: this.state.review,
-            isFree: this.state.isFree,
-            numStall: this.state.numStall,
-            isHelpful: this.state.isHelpful,
-            stallType: this.state.stallType,
-            photoUrl: this.state.photoUrl,
-          },
-        }),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: this.props.sessionToken,
-        }),
-      }
-    )
+    fetch(`${APIURL}/reviews/Edit/${this.props.reviewToUpdate.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        reviews: {
+          locationName: this.state.locationName,
+          review: this.state.review,
+          isFree: this.state.isFree,
+          numStall: this.state.numStall,
+          isHelpful: this.state.isHelpful,
+          stallType: this.state.stallType,
+          photoUrl: this.state.photoUrl,
+        },
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: this.props.sessionToken,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         this.setState({ data: data });

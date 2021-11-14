@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Modal, TextField, Button, Box, IconButton } from "@material-ui/core";
 import { Container } from "@mui/material";
+import APIURL from "../../helpers/environment";
 
 export default class ReplyCreate extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class ReplyCreate extends Component {
   };
   handleReplySubmit = async (review, e) => {
     e.preventDefault();
-    fetch(`http://localhost:3000/reply/createReply/${review.id}`, {
+    fetch(`${APIURL}/reply/createReply/${review.id}`, {
       method: "POST",
       body: JSON.stringify({
         reply: {
