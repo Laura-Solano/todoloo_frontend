@@ -55,11 +55,12 @@ class HomeIndex extends Component {
       .then((res) => this.fetchReviews())
       .catch((error) => console.log(error));
   };
-  //Delete Reply
+  // Delete Reply;
   replyDelete = (e) => {
     console.log(e.target.id);
     fetch(`http://localhost:3000/reply/deleteReply/${e.target.id}`, {
       method: "DELETE",
+      body: JSON.stringify({ review: { id: e.target.id } }),
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: this.props.sessionToken,

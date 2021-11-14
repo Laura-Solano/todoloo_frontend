@@ -47,18 +47,6 @@ export default class ReviewEdit extends Component {
     this.setState({ photoUrl: File.secure_url });
   };
 
-  // componentWillMount() {
-  //   this.setState({
-  //     locationName: this.props.reviewToUpdate.locationName,
-  //     review: this.props.review,
-  //     isFree: this.props.isFree,
-  //     numStall: this.props.numStall,
-  //     isHelpful: this.props.isHelpful,
-  //     stallType: this.props.stallType,
-  //     photoUrl: this.props.photoUrl,
-  //   });
-  // }
-
   handleUpdateReview = async (e) => {
     e.preventDefault();
     fetch(

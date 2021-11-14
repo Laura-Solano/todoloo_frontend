@@ -15,7 +15,7 @@ const ReviewCard = (props) => {
             <th>Free?</th>
             <th>Number of Stalls</th>
             <th>Stall Type</th>
-            <th>photoUrl</th>
+            <th>Photo</th>
             <th>Tools</th>
             <th>Responses</th>
           </tr>
@@ -33,11 +33,11 @@ const ReviewCard = (props) => {
                 <td>{review.photoUrl}</td>
 
                 <td>
-                  <Button onClick={(e) => props.delete(e)}>
+                  <Button id={review.id} onClick={props.delete}>
                     Delete Review
                   </Button>
                   <br />
-                  <Button onClick={(e) => this.props.handleUpdateReview}>
+                  <Button onClick={() => props.handleUpdateReview(review)}>
                     Update Review
                   </Button>
                   <br />
@@ -47,11 +47,9 @@ const ReviewCard = (props) => {
                 </td>
                 <td>{review.reply?.reply}</td>
                 <td>
-                  <Button onClick={(e) => this.props.replydelete(e)}>
-                    Delete Reply
-                  </Button>
+                  <Button onClick={props.delete}>Delete Reply</Button>
                   <br />
-                  <Button onClick={(e) => this.handleUpdateReply()}>
+                  <Button onClick={props.handleUpdateReply}>
                     Update Reply
                   </Button>
                   <br />
