@@ -111,10 +111,11 @@ export default class ReviewCreate extends Component {
               height: "800",
               maxWidth: "100%",
               maxHeight: "100%",
-              bgcolor: "background.paper",
+              color: "background.paper",
               border: "2px solid #000",
               boxShadow: 24,
               p: 4,
+              bgcolor: "white",
             }}
           >
             <Box

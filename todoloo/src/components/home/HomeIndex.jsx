@@ -3,13 +3,15 @@ import { Container, Typography } from "@mui/material";
 import ReviewCreate from "../reviews/ReviewCreate";
 import ReviewEdit from "../reviews/ReviewEdit";
 import ReviewCard from "../reviews/ReviewCard";
-import ReplyIndex from "../reply/ReplyIndex";
-import ReplyCreate from "../reply/ReplyCreate";
 class HomeIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
       reviews: [],
+      reviewToUpdate: {},
+      replies: [],
+      updateActive: false,
+      open: false,
     };
   }
   ////GET all reviews
@@ -29,13 +31,18 @@ class HomeIndex extends Component {
         return this.setState({ reviews: jsonData });
       });
   };
-  //Create Review
 
-  handleOpen() {
-    this.setState({ handleOpen: !this.state.handleOpen });
-  }
-
-  //Delete All Reviews
+  //Edit a Review
+  handleUpdateReview = (review) => {
+    this.setState({ reviewToUpdate: review });
+  };
+  handleOpen = () => {
+    this.setState({ updateActive: true });
+  };
+  handleClose = () => {
+    this.setState({ updateActive: false });
+  };
+  //Delete A Reviews
   reviewDelete = (e) => {
     console.log(e.target.id);
     fetch(`http://localhost:3000/reviews/Delete/${e.target.id}`, {
@@ -48,28 +55,19 @@ class HomeIndex extends Component {
       .then((res) => this.fetchReviews())
       .catch((error) => console.log(error));
   };
-  //Edit Review
-  reviewUpdate = (e, review) => {
-    e.preventDefault();
-    fetch(`http://localhost:3000/reviews/Edit/${review.id}`, {
-      method: "PUT",
-      body: JSON.stringify({ reviews: review }),
+  //Delete Reply
+  replyDelete = (e) => {
+    console.log(e.target.id);
+    fetch(`http://localhost:3000/reply/deleteReply/${e.target.id}`, {
+      method: "DELETE",
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: this.props.sessionToken,
       }),
-    }).then((res) => {
-      this.setState({ updatePress: false });
-      this.fetchReviews();
-    });
+    })
+      .then((res) => this.fetchReviews())
+      .catch((error) => console.log(error));
   };
-  setUpdatedReview = (e, review) => {
-    this.setState({
-      reviewToUpdate: review,
-      updatePressed: true,
-    });
-  };
-
   render() {
     return (
       <Container class="main">
@@ -89,25 +87,26 @@ class HomeIndex extends Component {
           updateReviewArray={this.fetchReviews}
         />
 
-        <ReplyCreate
-          sessionToken={this.props.sessionToken}
-          replyArray={this.fetchReplies}
-        />
         <div>
           <ReviewCard
             reviews={this.state.reviews}
             delete={this.reviewDelete}
-            update={this.reviewUpdate}
+            replyDelete={this.replyDelete}
+            handleUpdateReview={this.handleUpdateReview}
+            handleReplyClose={this.handleReplyClose}
+            handleOpen={this.handleOpen}
           />
         </div>
+        {this.state.updateActive && (
+          <ReviewEdit
+            reviewToUpdate={this.state.reviewToUpdate}
+            sessionToken={this.props.sessionToken}
+            handleUpdateReview={this.handleUpdateReview}
+            handleClose={this.handleClose}
+          />
+        )}
 
-        <ReviewEdit
-          t={this.state.updatePressed}
-          update={this.reviewUpdate}
-          review={this.state.reviewToUpdate}
-        />
         <div></div>
-        <ReplyIndex />
       </Container>
     );
   }
