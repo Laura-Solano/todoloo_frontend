@@ -5,7 +5,7 @@ import Footer from "./components/main/Footer";
 import Auth from "./auth/Auth";
 import { Container } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
-import Theme from "./theme/Theme";
+import Theme from "./theme/theme";
 import HomeIndex from "./components/home/HomeIndex";
 import Header from "./components/main/Header";
 class App extends Component {
