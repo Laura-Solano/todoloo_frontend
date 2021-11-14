@@ -1,9 +1,9 @@
 // import { React } from "react";
-
+//import APIURL from
 // const ReplyDelete = (props) => {
 //   replyDelete = (e) => {
 //     console.log(e.target.id);
-//     fetch(`http://localhost:3000/deleteReply/${e.target.id}`, {
+//     fetch(`{APIURL}/deleteReply/${e.target.id}`, {
 //       method: "DELETE",
 //       headers: new Headers({
 //         "Content-Type": "application/json",
