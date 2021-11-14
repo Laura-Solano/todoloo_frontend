@@ -50,7 +50,7 @@ export default class ReviewEdit extends Component {
 
   handleUpdateReview = async (e) => {
     e.preventDefault();
-    fetch(`${APIURL}/reviews/Edit/${this.props.reviewToUpdate.id}`, {
+    fetch(`${APIURL}reviews/Edit/${this.props.reviewToUpdate.id}`, {
       method: "PUT",
       body: JSON.stringify({
         reviews: {

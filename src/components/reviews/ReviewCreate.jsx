@@ -50,7 +50,7 @@ export default class ReviewCreate extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    fetch(`${APIURL}/reviews/create`, {
+    fetch(`${APIURL}reviews/create`, {
       method: "POST",
       body: JSON.stringify({
         reviews: {

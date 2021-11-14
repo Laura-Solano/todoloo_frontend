@@ -23,7 +23,7 @@ export default class SignIn extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    fetch(`${APIURL}/user/login`, {
+    fetch(`${APIURL}user/login`, {
       method: "POST",
       body: JSON.stringify({
         user: {

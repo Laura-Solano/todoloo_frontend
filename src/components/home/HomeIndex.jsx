@@ -20,7 +20,7 @@ class HomeIndex extends Component {
     this.fetchReviews();
   }
   fetchReviews = () => {
-    fetch(`${APIURL}/reviews`, {
+    fetch(`${APIURL}reviews`, {
       method: "GET",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ class HomeIndex extends Component {
   //Delete A Reviews
   reviewDelete = (e) => {
     console.log(e.target.id);
-    fetch(`${APIURL}/reviews/Delete/${e.target.id}`, {
+    fetch(`${APIURL}reviews/Delete/${e.target.id}`, {
       method: "DELETE",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ class HomeIndex extends Component {
   // Delete Reply;
   replyDelete = (e) => {
     console.log(e.target.id);
-    fetch(`${APIURL}/reply/deleteReply/${e.target.id}`, {
+    fetch(`${APIURL}reply/deleteReply/${e.target.id}`, {
       method: "DELETE",
       body: JSON.stringify({ review: { id: e.target.id } }),
       headers: new Headers({

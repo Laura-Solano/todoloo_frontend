@@ -24,7 +24,7 @@ export default class SignUp extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    fetch(`${APIURL}/user/register`, {
+    fetch(`${APIURL}user/register`, {
       method: "POST",
       body: JSON.stringify({
         user: {

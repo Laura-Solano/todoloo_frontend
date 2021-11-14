@@ -17,7 +17,7 @@ export default class ReplyCreate extends Component {
   };
   handleReplySubmit = async (review, e) => {
     e.preventDefault();
-    fetch(`${APIURL}/reply/createReply/${review.id}`, {
+    fetch(`${APIURL}reply/createReply/${review.id}`, {
       method: "POST",
       body: JSON.stringify({
         reply: {
