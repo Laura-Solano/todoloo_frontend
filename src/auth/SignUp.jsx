@@ -8,6 +8,7 @@ import {
   Avatar,
   Grid,
 } from "@material-ui/core";
+import APIURL from "../helpers/environment";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 
@@ -23,7 +24,7 @@ export default class SignUp extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/user/register", {
+    fetch(`${APIURL}/user/register`, {
       method: "POST",
       body: JSON.stringify({
         user: {

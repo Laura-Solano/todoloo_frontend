@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
+import APIURL from "../helpers/environment";
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ export default class SignIn extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/user/login", {
+    fetch(`${APIURL}/user/login`, {
       method: "POST",
       body: JSON.stringify({
         user: {
