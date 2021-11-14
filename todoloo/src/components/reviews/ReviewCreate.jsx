@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Container } from "@mui/material";
+import APIURL from "../../helpers/environment";
 
 export default class ReviewCreate extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ export default class ReviewCreate extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/reviews/create", {
+    fetch(`${APIURL}/reviews/create`, {
       method: "POST",
       body: JSON.stringify({
         reviews: {

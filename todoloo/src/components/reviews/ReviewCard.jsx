@@ -37,7 +37,7 @@ const ReviewCard = (props) => {
                     Delete Review
                   </Button>
                   <br />
-                  <Button onClick={() => props.handleUpdateReview(review)}>
+                  <Button onClick={(e) => props.handleUpdateReview(e, review)}>
                     Update Review
                   </Button>
                   <br />
@@ -49,9 +49,7 @@ const ReviewCard = (props) => {
                 <td>
                   <Button onClick={props.delete}>Delete Reply</Button>
                   <br />
-                  <Button onClick={props.handleUpdateReply}>
-                    Update Reply
-                  </Button>
+                  <Button>Update Reply</Button>
                   <br />
                 </td>
               </tr>
