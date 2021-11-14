@@ -16,19 +16,20 @@ export default class ReviewEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locationName: "",
-      review: "",
-      isFree: false,
-      numStall: "",
-      isHelpful: false,
-      stallType: "",
-      photoUrl: "",
-      open: false,
+      locationName: this.props.reviewToUpdate.locationName,
+      review: this.props.reviewToUpdate.review,
+      isFree: this.props.reviewToUpdate.isFree,
+      numStall: this.props.reviewToUpdate.numStall,
+      isHelpful: this.props.reviewToUpdate.isHelpful,
+      stallType: this.props.reviewToUpdate.stallType,
+      photoUrl: this.props.reviewToUpdate.photoUrl,
+      open: true,
     };
   }
-  handleClose() {
+
+  handleClose = () => {
     this.setState({ open: !this.state.open });
-  }
+  };
   uploadImage = async (e) => {
     let files = e.target.files;
     let data = new FormData();
@@ -45,28 +46,42 @@ export default class ReviewEdit extends Component {
     console.log(File);
     this.setState({ photoUrl: File.secure_url });
   };
-  componentWillMount() {
-    this.setState({
-      locationName: this.props.locationName,
-      review: this.props.review,
-      isFree: this.props.isFree,
-      numStall: this.props.numStall,
-      isHelpful: this.props.isHelpful,
-      stallType: this.props.stallType,
-      photoUrl: this.props.photoUrl,
-    });
-  }
 
+  handleUpdateReview = async (e) => {
+    e.preventDefault();
+    fetch(
+      `http://localhost:3000/reviews/Edit/${this.props.reviewToUpdate.id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          reviews: {
+            locationName: this.state.locationName,
+            review: this.state.review,
+            isFree: this.state.isFree,
+            numStall: this.state.numStall,
+            isHelpful: this.state.isHelpful,
+            stallType: this.state.stallType,
+            photoUrl: this.state.photoUrl,
+          },
+        }),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: this.props.sessionToken,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ data: data });
+        console.log(data);
+        this.handleClose();
+      })
+      .catch((error) => console.log(error));
+  };
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
     });
-  };
-
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    this.props.update(e, this.state);
-    this.handleClose();
   };
 
   stallType = [
@@ -103,7 +118,7 @@ export default class ReviewEdit extends Component {
           >
             <Box
               component="form"
-              onSubmit={this.handleSubmit}
+              onSubmit={this.handleUpdateReview}
               sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
             >
               <IconButton
@@ -118,6 +133,7 @@ export default class ReviewEdit extends Component {
               <TextField
                 sx={{ m: 1, width: "25ch" }}
                 onChange={this.handleChange}
+                name="locationName"
                 variant="filled"
                 label="Location Name"
                 required
@@ -131,6 +147,7 @@ export default class ReviewEdit extends Component {
                 onChange={this.handleChange}
                 variant="outlined"
                 value={this.state.stallType}
+                name="stallType"
               >
                 {this.stallType.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -148,6 +165,7 @@ export default class ReviewEdit extends Component {
                 rows={10}
                 required
                 value={this.state.review}
+                name="review"
               ></TextField>
               <TextField
                 sx={{ m: 1, width: "25ch" }}
@@ -156,6 +174,7 @@ export default class ReviewEdit extends Component {
                 variant="filled"
                 required
                 value={this.state.numStall}
+                name="numStall"
               />
               <FormControlLabel
                 control={
@@ -164,6 +183,7 @@ export default class ReviewEdit extends Component {
                     color="primary"
                     onChange={this.handleChange}
                     value={this.state.isFree}
+                    name="isFree"
                   />
                 }
                 label="Free to use?"
@@ -207,7 +227,7 @@ export default class ReviewEdit extends Component {
                   id="modal-description"
                   color="secondary"
                   variant="contained"
-                  onClick={() => this.handleClose()}
+                  onClick={this.props.handleClose}
                 >
                   Cancel
                 </Button>

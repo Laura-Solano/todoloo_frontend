@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, TextField, Button, Box } from "@material-ui/core";
+import { Modal, TextField, Button, Box, IconButton } from "@material-ui/core";
 import { Container } from "@mui/material";
 
 export default class ReplyCreate extends Component {
@@ -11,13 +11,12 @@ export default class ReplyCreate extends Component {
       open: false,
     };
   }
-  handleClose() {
+  handleReplyClose = () => {
     this.setState({ open: !this.state.open });
-  }
-
-  handleSubmit = async (e) => {
+  };
+  handleReplySubmit = async (review, e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/reply/create", {
+    fetch(`http://localhost:3000/reply/createReply/${review.id}`, {
       method: "POST",
       body: JSON.stringify({
         reply: {
@@ -34,7 +33,7 @@ export default class ReplyCreate extends Component {
         this.props.replyArray();
         this.setState({ replyCreate: result });
         console.log(result);
-        this.handleClose();
+        this.handleReplyClose();
       });
   };
 
@@ -45,9 +44,9 @@ export default class ReplyCreate extends Component {
           type="submit"
           color="secondary"
           variant="contained"
-          onClick={() => this.handleClose()}
+          onClick={() => this.handleReplyClose()}
         >
-          Add Reply
+          Add a Reply
         </Button>
 
         <Modal
@@ -66,23 +65,34 @@ export default class ReplyCreate extends Component {
               height: "800",
               maxWidth: "100%",
               maxHeight: "100%",
-              bgcolor: "background.paper",
+              color: "background.paper",
               border: "2px solid #000",
               boxShadow: 24,
               p: 4,
+              bgcolor: "white",
             }}
           >
             <Box
               component="form"
-              onSubmit={this.handleSubmit}
+              onSubmit={this.handleReplySubmit}
               sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
             >
+              <IconButton
+                aria-label="close"
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              ></IconButton>
+              <h2>Create a reply</h2>
+
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "25ch" }}
                 onChange={(e) => this.setState({ reply: e.target.value })}
                 variant="filled"
-                label="Reply Here:"
+                label="Write your reply:"
                 multiline
                 rows={10}
                 required
@@ -105,7 +115,7 @@ export default class ReplyCreate extends Component {
                   id="modal-description"
                   color="secondary"
                   variant="contained"
-                  onClick={() => this.handleClose()}
+                  onClick={() => this.handleReplyClose()}
                 >
                   Cancel
                 </Button>

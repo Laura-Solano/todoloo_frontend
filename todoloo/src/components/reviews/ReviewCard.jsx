@@ -1,6 +1,6 @@
 import { React } from "react";
 import { Table, Button } from "reactstrap";
-
+import ReplyCreate from "../reply/ReplyCreate";
 const ReviewCard = (props) => {
   return (
     <div>
@@ -15,7 +15,9 @@ const ReviewCard = (props) => {
             <th>Free?</th>
             <th>Number of Stalls</th>
             <th>Stall Type</th>
-            <th>photoUrl</th>
+            <th>Photo</th>
+            <th>Tools</th>
+            <th>Responses</th>
           </tr>
         </thead>
         <tbody>
@@ -31,18 +33,26 @@ const ReviewCard = (props) => {
                 <td>{review.photoUrl}</td>
 
                 <td>
-                  <Button id={review.id} onClick={(e) => props.delete(e)}>
-                    Delete
+                  <Button id={review.id} onClick={props.delete}>
+                    Delete Review
                   </Button>
                   <br />
-                  <Button
-                    id={review.id}
-                    onClick={(e) => props.update(e, review)}
-                  >
-                    Update
+                  <Button onClick={() => props.handleUpdateReview(review)}>
+                    Update Review
                   </Button>
                   <br />
-                  <Button>Reply</Button>
+                </td>
+                <td>
+                  <ReplyCreate />
+                </td>
+                <td>{review.reply?.reply}</td>
+                <td>
+                  <Button onClick={props.delete}>Delete Reply</Button>
+                  <br />
+                  <Button onClick={props.handleUpdateReply}>
+                    Update Reply
+                  </Button>
+                  <br />
                 </td>
               </tr>
             );
