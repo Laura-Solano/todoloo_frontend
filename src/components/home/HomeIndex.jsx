@@ -61,7 +61,7 @@ class HomeIndex extends Component {
     console.log(e.target.id);
     fetch(`${APIURL}reply/deleteReply/${e.target.id}`, {
       method: "DELETE",
-      body: JSON.stringify({ review: { id: e.target.id } }),
+      body: JSON.stringify({ reply: { id: e.target.id } }),
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: this.props.sessionToken,
@@ -105,6 +105,7 @@ class HomeIndex extends Component {
             sessionToken={this.props.sessionToken}
             handleUpdateReview={this.handleUpdateReview}
             handleClose={this.handleClose}
+            reviewArray={this.fetchReviews}
           />
         )}
 

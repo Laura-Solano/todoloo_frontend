@@ -73,6 +73,7 @@ export default class ReviewEdit extends Component {
         this.setState({ data: data });
         console.log(data);
         this.handleClose();
+        this.props.reviewArray();
       })
       .catch((error) => console.log(error));
   };

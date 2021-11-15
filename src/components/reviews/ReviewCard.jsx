@@ -1,63 +1,89 @@
 import { React } from "react";
-import { Table, Button } from "reactstrap";
+import {
+  Table,
+  Button,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@material-ui/core";
+
 import ReplyCreate from "../reply/ReplyCreate";
 const ReviewCard = (props) => {
   return (
-    <div>
+    <TableContainer component={Paper}>
       <h3>Our Reviews</h3>
-      <hr />
-      <Table striped>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Location Name</th>
-            <th>Review</th>
-            <th>Free?</th>
-            <th>Number of Stalls</th>
-            <th>Stall Type</th>
-            <th>Photo</th>
-            <th>Tools</th>
-            <th>Responses</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table sx={{ minWidth: 650 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell align="Center">#</TableCell>
+            <TableCell align="Center">Location Name</TableCell>
+            <TableCell align="Center">Review</TableCell>
+            <TableCell align="Center">Free?</TableCell>
+            <TableCell align="Center">Number of Stalls</TableCell>
+            <TableCell align="Center">Stall Type</TableCell>
+            <TableCell align="Center">Photo</TableCell>
+            <TableCell align="Center">Tools</TableCell>
+            <TableCell align="Center">Responses</TableCell>
+            <TableCell align="center">Owner Reply</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {props.reviews.map((review, id) => {
             return (
-              <tr key={id}>
-                <th scope="row">{review.id}</th>
-                <td>{review.locationName}</td>
-                <td>{review.review}</td>
-                <td>{review.isFree}</td>
-                <td>{review.numStall}</td>
-                <td>{review.stallType}</td>
-                <td>{review.photoUrl}</td>
+              <TableRow key={id}>
+                <TableHead scope="row">{review.id}</TableHead>
+                <TableCell align="right">{review.locationName}</TableCell>
+                <TableCell align="right">{review.review}</TableCell>
+                <TableCell align="right">{review.isFree}</TableCell>
+                <TableCell align="right">{review.numStall}</TableCell>
+                <TableCell align="right">{review.stallType}</TableCell>
+                <TableCell align="right">{review.photoUrl}</TableCell>
 
-                <td>
-                  <Button id={review.id} onClick={props.delete}>
+                <TableCell>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    id={review.id}
+                    onClick={props.delete}
+                  >
                     Delete Review
                   </Button>
                   <br />
-                  <Button onClick={(e) => props.handleUpdateReview(e, review)}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={(e) => {
+                      props.handleOpen();
+                      props.handleUpdateReview(review);
+                    }}
+                  >
                     Update Review
                   </Button>
                   <br />
-                </td>
-                <td>
+                </TableCell>
+                <TableCell>
                   <ReplyCreate />
-                </td>
-                <td>{review.reply?.reply}</td>
-                <td>
-                  <Button onClick={props.delete}>Delete Reply</Button>
+                </TableCell>
+                <TableCell>{review.reply?.reply}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={props.replyDelete}
+                  >
+                    Delete Reply
+                  </Button>
                   <br />
-                  <Button>Update Reply</Button>
-                  <br />
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
+        </TableBody>
       </Table>
-    </div>
+    </TableContainer>
   );
 };
 export default ReviewCard;
