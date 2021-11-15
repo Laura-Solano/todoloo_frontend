@@ -31,6 +31,7 @@ export default class ReviewCreate extends Component {
   handleClose() {
     this.setState({ open: !this.state.open });
   }
+
   uploadImage = async (e) => {
     let files = e.target.files;
     let data = new FormData();
@@ -147,7 +148,7 @@ export default class ReviewCreate extends Component {
                 sx={{ m: 1, width: "25ch" }}
                 select
                 label="Select"
-                onChange={this.handleChange}
+                onChange={(e) => this.setState({ stallType: e.target.value })}
                 variant="outlined"
               >
                 {this.stallType.map((option) => (

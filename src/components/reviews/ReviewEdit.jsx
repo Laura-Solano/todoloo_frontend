@@ -142,7 +142,7 @@ export default class ReviewEdit extends Component {
                 sx={{ m: 1, width: "25ch" }}
                 select
                 label="Select"
-                onChange={this.handleChange}
+                onChange={(e) => this.setState({ stallType: e.target.value })}
                 variant="outlined"
                 value={this.state.stallType}
                 name="stallType"
