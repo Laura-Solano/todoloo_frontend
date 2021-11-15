@@ -75,6 +75,7 @@ export default class ReviewCreate extends Component {
         this.setState({ reviewCreate: result });
         console.log(result);
         this.handleClose();
+        this.fetchReviews();
       });
   };
 

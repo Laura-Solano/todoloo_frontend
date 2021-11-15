@@ -13,6 +13,7 @@ class HomeIndex extends Component {
       replies: [],
       updateActive: false,
       open: false,
+      reviewToReply: {},
     };
   }
   ////GET all reviews
@@ -56,20 +57,12 @@ class HomeIndex extends Component {
       .then((res) => this.fetchReviews())
       .catch((error) => console.log(error));
   };
-  // Delete Reply;
-  replyDelete = (e) => {
-    console.log(e.target.id);
-    fetch(`${APIURL}reply/deleteReply/${e.target.id}`, {
-      method: "DELETE",
-      body: JSON.stringify({ reply: { id: e.target.id } }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: this.props.sessionToken,
-      }),
-    })
-      .then((res) => this.fetchReviews())
-      .catch((error) => console.log(error));
+  //create Reply
+  handleReply = (review) => {
+    this.setState({ reviewToReply: review });
   };
+  // Delete Reply;
+
   render() {
     return (
       <Container class="main">
@@ -97,6 +90,11 @@ class HomeIndex extends Component {
             handleUpdateReview={this.handleUpdateReview}
             handleReplyClose={this.handleReplyClose}
             handleOpen={this.handleOpen}
+            replies={this.state.replies}
+            handleReply={this.handleReply}
+            reviewToReply={this.state.reviewToReply}
+            sessionToken={this.props.sessionToken}
+            fetchReviews={this.fetchReviews}
           />
         </div>
         {this.state.updateActive && (

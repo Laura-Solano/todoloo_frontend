@@ -10,14 +10,15 @@ export default class ReplyCreate extends Component {
       reply: "",
       replyCreate: {},
       open: false,
+      review: "",
     };
   }
   handleReplyClose = () => {
     this.setState({ open: !this.state.open });
   };
-  handleReplySubmit = async (review, e) => {
+  handleReplySubmit = async (e) => {
     e.preventDefault();
-    fetch(`${APIURL}reply/createReply/${review.id}`, {
+    fetch(`${APIURL}reply/createReply/${this.props.reviewToReply.id}`, {
       method: "POST",
       body: JSON.stringify({
         reply: {
@@ -31,10 +32,10 @@ export default class ReplyCreate extends Component {
     })
       .then((response) => response.json())
       .then((result) => {
-        this.props.replyArray();
         this.setState({ replyCreate: result });
         console.log(result);
         this.handleReplyClose();
+        this.props.fetchReviews();
       });
   };
 
@@ -45,7 +46,10 @@ export default class ReplyCreate extends Component {
           type="submit"
           color="secondary"
           variant="contained"
-          onClick={() => this.handleReplyClose()}
+          onClick={() => {
+            this.handleReplyClose();
+            this.props.handleReply(this.props.review);
+          }}
         >
           Add a Reply
         </Button>

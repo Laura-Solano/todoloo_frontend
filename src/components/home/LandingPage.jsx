@@ -1,5 +1,4 @@
 import React from "react";
-
 import BannerImage from "../../assets/images/BannerImage.jpg";
 import { Box, Grid, Typography } from "@mui/material";
 import Logo from "../../assets/images/Logo.jpg";

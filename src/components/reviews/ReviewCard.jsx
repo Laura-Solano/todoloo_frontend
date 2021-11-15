@@ -9,9 +9,24 @@ import {
   TableRow,
   Paper,
 } from "@material-ui/core";
-
+import APIURL from "../../helpers/environment";
 import ReplyCreate from "../reply/ReplyCreate";
 const ReviewCard = (props) => {
+  const replyDelete = (reply) => {
+    fetch(`${APIURL}reply/deleteReply/${reply.id}`, {
+      method: "DELETE",
+
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: props.sessionToken,
+      }),
+    })
+      .then((res) => {
+        props.fetchReviews();
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <TableContainer component={Paper}>
       <h3>Our Reviews</h3>
@@ -28,6 +43,7 @@ const ReviewCard = (props) => {
             <TableCell align="Center">Tools</TableCell>
             <TableCell align="Center">Responses</TableCell>
             <TableCell align="center">Owner Reply</TableCell>
+            <TableCell align="center">Owner Tools</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -65,14 +81,23 @@ const ReviewCard = (props) => {
                   <br />
                 </TableCell>
                 <TableCell>
-                  <ReplyCreate />
+                  {/* Reply Create */}
+                  <ReplyCreate
+                    sessionToken={props.sessionToken}
+                    reviewToReply={props.reviewToReply}
+                    handleReply={props.handleReply}
+                    review={review}
+                    fetchReviews={props.fetchReviews}
+                  />
                 </TableCell>
                 <TableCell>{review.reply?.reply}</TableCell>
                 <TableCell>
                   <Button
                     variant="outlined"
                     size="small"
-                    onClick={props.replyDelete}
+                    onClick={() => {
+                      replyDelete(review.reply);
+                    }}
                   >
                     Delete Reply
                   </Button>
