@@ -7,27 +7,38 @@ export default class ReplyEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      reply: this.props.reply.reply,
+      reply: this.props.replyToEdit.reply,
       open: false,
     };
   }
   handleReplyClose = () => {
     this.setState({ open: !this.state.open });
   };
-  handleReplyEdit = async (e) => {
+
+  handleReplyChange = async (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+  handleReplyEdit = (e) => {
     e.preventDefault();
-    fetch(`${APIURL}reply/editReply/${this.props.replyToEdit.id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        reply: {
-          reply: this.state.reply,
-        },
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: this.props.sessionToken,
-      }),
-    })
+    console.log(this.props.replyToEdit);
+    fetch(
+      `${APIURL}reply/editReply/${this.props.replyToEdit.id}`,
+
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          reply: {
+            reply: this.state.reply,
+          },
+        }),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: this.props.sessionToken,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((result) => {
         this.setState({ ReplyEdit: result });
@@ -35,14 +46,20 @@ export default class ReplyEdit extends Component {
         this.props.fetchReviews();
       });
   };
-  handleReplySChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
   render() {
     return (
       <Container>
+        <Button
+          type="submit"
+          variant="outlined"
+          size="small"
+          onClick={() => {
+            this.handleReplyClose();
+            this.props.handleReplyEdit(this.props.reply);
+          }}
+        >
+          Edit Reply
+        </Button>
         <Modal
           open={this.state.open}
           onClose={!this.state.open}
@@ -68,7 +85,7 @@ export default class ReplyEdit extends Component {
           >
             <Box
               component="form"
-              onSubmit={this.handleReplySubmit}
+              onSubmit={this.handleReplyEdit}
               sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
             >
               <IconButton
@@ -88,6 +105,8 @@ export default class ReplyEdit extends Component {
                 variant="filled"
                 label="Write your reply:"
                 multiline
+                value={this.state.reply}
+                name="reply"
                 rows={10}
                 required
               ></TextField>

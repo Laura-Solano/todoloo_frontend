@@ -14,6 +14,8 @@ import {
 import APIURL from "../../helpers/environment";
 import ReplyCreate from "../reply/ReplyCreate";
 
+import ReplyEdit from "../reply/ReplyEdit";
+
 const ReviewCard = (props) => {
   const replyDelete = (reply) => {
     fetch(`${APIURL}reply/deleteReply/${reply.id}`, {
@@ -108,9 +110,13 @@ const ReviewCard = (props) => {
                       Delete Reply
                     </Button>
                     <br />
-                    <Button variant="outlined" size="small">
-                      Delete Reply
-                    </Button>
+                    <ReplyEdit
+                      sessionToken={props.sessionToken}
+                      fetchReviews={props.fetchReviews}
+                      replyToEdit={props.replyToEdit}
+                      reply={review.reply}
+                      handleReplyEdit={props.handleReplyEdit}
+                    />
                   </Box>
                 </TableCell>
               </TableRow>

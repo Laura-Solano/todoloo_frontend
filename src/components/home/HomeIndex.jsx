@@ -10,10 +10,11 @@ class HomeIndex extends Component {
     this.state = {
       reviews: [],
       reviewToUpdate: {},
-      replies: [],
+      reply: [],
       updateActive: false,
       open: false,
       reviewToReply: {},
+      replyToEdit: {},
     };
   }
   ////GET all reviews
@@ -61,7 +62,10 @@ class HomeIndex extends Component {
   handleReply = (review) => {
     this.setState({ reviewToReply: review });
   };
-  // Delete Reply;
+  // Edit Reply;
+  handleReplyEdit = (reply) => {
+    this.setState({ replyToEdit: reply });
+  };
 
   render() {
     return (
@@ -90,11 +94,13 @@ class HomeIndex extends Component {
             handleUpdateReview={this.handleUpdateReview}
             handleReplyClose={this.handleReplyClose}
             handleOpen={this.handleOpen}
-            replies={this.state.replies}
+            reply={this.state.reply}
             handleReply={this.handleReply}
             reviewToReply={this.state.reviewToReply}
             sessionToken={this.props.sessionToken}
             fetchReviews={this.fetchReviews}
+            replyToEdit={this.state.replyToEdit}
+            handleReplyEdit={this.handleReplyEdit}
           />
         </div>
         {this.state.updateActive && (
