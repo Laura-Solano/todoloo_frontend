@@ -1,5 +1,10 @@
 import { React, Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import LandingPage from "./components/home/LandingPage";
 import Footer from "./components/main/Footer";
 import Auth from "./auth/Auth";
@@ -38,11 +43,9 @@ class App extends Component {
           <Header clearToken={this.state.clearToken} />
           <Switch>
             <Route exact path={"/"} component={LandingPage} />
-
-            {localStorage.getItem("sessionToken") ? (
-              <Route exact path="/home">
-                <HomeIndex sessionToken={this.state.sessionToken} />
-              </Route>
+            {this.state.sessionToken ===
+            localStorage.getItem("sessionToken") ? (
+              <HomeIndex sessionToken={this.state.sessionToken} />
             ) : (
               <Auth updateToken={this.updateToken} />
             )}
