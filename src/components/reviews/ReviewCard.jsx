@@ -1,4 +1,4 @@
-import { React } from "react";
+import { Component, React } from "react";
 import {
   Table,
   Button,
@@ -8,9 +8,12 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Box,
+  Container,
 } from "@material-ui/core";
 import APIURL from "../../helpers/environment";
 import ReplyCreate from "../reply/ReplyCreate";
+
 const ReviewCard = (props) => {
   const replyDelete = (reply) => {
     fetch(`${APIURL}reply/deleteReply/${reply.id}`, {
@@ -59,25 +62,27 @@ const ReviewCard = (props) => {
                 <TableCell align="right">{review.photoUrl}</TableCell>
 
                 <TableCell>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    id={review.id}
-                    onClick={props.delete}
-                  >
-                    Delete Review
-                  </Button>
-                  <br />
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={(e) => {
-                      props.handleOpen();
-                      props.handleUpdateReview(review);
-                    }}
-                  >
-                    Update Review
-                  </Button>
+                  <Box>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      id={review.id}
+                      onClick={props.delete}
+                    >
+                      Delete Review
+                    </Button>
+                    <br />
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={(e) => {
+                        props.handleOpen();
+                        props.handleUpdateReview(review);
+                      }}
+                    >
+                      Update Review
+                    </Button>
+                  </Box>
                   <br />
                 </TableCell>
                 <TableCell>
@@ -92,16 +97,21 @@ const ReviewCard = (props) => {
                 </TableCell>
                 <TableCell>{review.reply?.reply}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => {
-                      replyDelete(review.reply);
-                    }}
-                  >
-                    Delete Reply
-                  </Button>
-                  <br />
+                  <Box>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => {
+                        replyDelete(review.reply);
+                      }}
+                    >
+                      Delete Reply
+                    </Button>
+                    <br />
+                    <Button variant="outlined" size="small">
+                      Delete Reply
+                    </Button>
+                  </Box>
                 </TableCell>
               </TableRow>
             );
